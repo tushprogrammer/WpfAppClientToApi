@@ -1,0 +1,26 @@
+﻿<Window x:Class="WpfAppClientToApi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppClientToApi"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ListView x:Name="listViewBook" Margin="0,0,421,0">
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Id}" Header="Id"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Имя"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding LastName}" Header="Фамилия"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding MiddleName}" Header="Отчество"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}" Header="Номер телефона"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Адрес"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
