@@ -1,0 +1,21 @@
+﻿<Window x:Class="WpfAppClientToApi.Registration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppClientToApi"
+        mc:Ignorable="d"
+        Title="Registration" Height="400" Width="400">
+    <Grid>
+        <TextBlock x:Name="header" HorizontalAlignment="Center" Margin="0,34,0,0" TextWrapping="Wrap" Text="Регистрация" VerticalAlignment="Top" FontSize="20"/>
+        <TextBlock HorizontalAlignment="Left" Margin="95,108,0,0" TextWrapping="Wrap" Text="Логин" VerticalAlignment="Top"/>
+        <TextBox x:Name="LoginPropbox" HorizontalAlignment="Left" Margin="200,107,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="95,131,0,0" TextWrapping="Wrap" Text="Пароль" VerticalAlignment="Top"/>
+        <TextBox x:Name="Passwordbox" HorizontalAlignment="Left" Margin="200,130,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBlock HorizontalAlignment="Left" Margin="95,154,0,0" TextWrapping="Wrap" Text="Продублируйте пароль" VerticalAlignment="Top" Width="90"/>
+        <TextBox x:Name="ConfirmPasswordbox" HorizontalAlignment="Left" Margin="200,153,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="RegistrationButton" Content="Регистрация" HorizontalAlignment="Center" Margin="0,214,0,0" VerticalAlignment="Top" Height="26" Width="108"/>
+        <TextBlock x:Name="ErrorLabel" HorizontalAlignment="Center" Margin="0,73,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

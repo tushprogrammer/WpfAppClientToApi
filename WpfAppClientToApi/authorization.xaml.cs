@@ -42,7 +42,7 @@ namespace WpfAppClientToApi
                 if (Login(user))
                 {
                     //создание и открытие нового окна
-                    MainWindow main = new MainWindow();
+                    MainWindow main = new MainWindow(user);
                     main.Show();
                     this.Close(); //после успешного входа, это окно уже не требуется
                 }
@@ -53,13 +53,11 @@ namespace WpfAppClientToApi
             }
             catch (SocketException E)
             {
-                MessageBox.Show("Приложение Api не запущено");
-                return;
+                ErrorBox.Text = "Приложение Api не запущено";
             }
             catch (Exception a)
             {
-                MessageBox.Show(a.Message); //вывод об ошибке и возврат
-                return;
+                ErrorBox.Text = a.Message; //вывод об ошибке и возврат
             }
            
         }
@@ -75,9 +73,6 @@ namespace WpfAppClientToApi
             }
             return false;
         }
-        //private bool IsUserAdmin(string username)
-        //{
-
-        //}
+      
     }
 }

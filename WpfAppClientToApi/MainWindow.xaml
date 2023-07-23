@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="listViewBook" Margin="0,0,421,0">
+        <ListView x:Name="listViewBook" Margin="0,0,254,0">
 
             <ListView.View>
                 <GridView>
@@ -19,8 +19,23 @@
                     <GridViewColumn DisplayMemberBinding="{Binding Address}" Header="Адрес"/>
                     <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Описание"/>
                 </GridView>
+
+
             </ListView.View>
         </ListView>
+        <Button x:Name="AddButton" HorizontalAlignment="Left" Margin="625,43,0,0" VerticalAlignment="Top" Height="37" Width="96" Click="AddButton_Click">
+            <Button.Content>
+                <TextBlock Text="Добавить контакт"  TextWrapping="Wrap" Width="74" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </Button.Content>
+        </Button>
+        <Button x:Name="AddUserButton" HorizontalAlignment="Left" Margin="625,172,0,0" VerticalAlignment="Top" Height="37" Width="96" Click="AddUserButton_Click">
+            <Button.Content>
+                <TextBlock Text="Добавить пользователя"  TextWrapping="Wrap" Width="100" HorizontalAlignment="Center" TextAlignment="Center"/>
+            </Button.Content>
+        </Button>
+        <Button x:Name="DelButton" Content="Удалить" HorizontalAlignment="Left" Margin="625,92,0,0" VerticalAlignment="Top" Height="27" Width="96" Click="DelButton_Click"/>
+        <Button x:Name="EditButton" Content="Изменить" HorizontalAlignment="Left" Margin="625,134,0,0" VerticalAlignment="Top" Height="27" Width="96" Click="EditButton_Click"/>
+        <Button x:Name="AuthorizationButton" Content="Вход" HorizontalAlignment="Left" Margin="750,10,0,0" VerticalAlignment="Top" Click="AuthorizationButton_Click"/>
 
     </Grid>
 </Window>
