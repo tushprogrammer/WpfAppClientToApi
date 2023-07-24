@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfAppClientToApi
 {
@@ -77,15 +78,29 @@ namespace WpfAppClientToApi
         }
         public void AddNewUser(UserRegistration NewUser)
         {
-            //не факт что заработает, не понятно к какому post запросу это придет
-            //пока что не работает
-            var result = Client.PostAsync(url + "/1",
-                new StringContent(
-                    JsonConvert.SerializeObject(NewUser),
-                    Encoding.UTF8,
-                    "application/json")
-                ).Result;
-            var res = result.Content.ToString();
+            //проверка на существование такого же пользователя
+            string url = "api/Account/Login";
+            var r = Client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(NewUser), Encoding.UTF8, "application/json")).Result;
+            bool ret = false;
+            if (r.IsSuccessStatusCode)
+            {
+                var otvet = r.Content.ReadAsStringAsync().Result;
+                ret = Convert.ToBoolean(otvet);
+            }
+            if (!ret) //если вход не выполнен, значит такого пользователя нет (эту проверку надо вынести отсюда раньше)
+            {
+                //не факт что заработает, не понятно к какому post запросу это придет
+                //пока что не работает (возможно сам запрос через жепу работате)
+                string urlAccount = "api/Account/Register";
+                string json = JsonConvert.SerializeObject(NewUser);
+                r = Client.PostAsync(urlAccount, new StringContent(JsonConvert.SerializeObject(NewUser), 
+                    Encoding.UTF8, "application/json")).Result;
+                if (r.IsSuccessStatusCode)
+                {
+                    var otvet = r.Content.ReadAsStringAsync().Result;
+                    //bool ret = Convert.ToBoolean(otvet);
+                }
+            }
         }
     }
 

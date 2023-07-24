@@ -63,7 +63,8 @@ namespace WpfAppClientToApi
         }
         private bool Login(UserModel user)
         {
-            string url = "api/Account";
+
+            string url = "api/Account/Login";
             var r =  httpClient.PostAsync(url, new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")).Result;
             if(r.IsSuccessStatusCode)
             {

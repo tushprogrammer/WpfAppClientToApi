@@ -112,7 +112,8 @@ namespace WpfAppClientToApi
                 Newuser = new UserRegistration()
                 {
                     LoginProp = LoginPropbox.Text,
-                    Password = Passwordbox.Text
+                    Password = Passwordbox.Text,
+                    ConfirmPassword = ConfirmPasswordbox.Text
                 };
                 this.DialogResult = true;
 
