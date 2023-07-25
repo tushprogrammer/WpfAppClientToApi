@@ -44,28 +44,28 @@ namespace WpfAppClientToApi
                     ErrorLabel.Text = "поле 'Логин' должно быть больше 6ти и меньше 20ти символов";
                     return;
                 }
-                if (Passwordbox.Text == string.Empty)
+                if (Passwordbox.Password == string.Empty)
                 {
                     ErrorLabel.Text = "Заполните поле 'Пароль'";
                     return;
                 }
-                if (Passwordbox.Text.Length < 6 )
+                if (Passwordbox.Password.Length < 6 )
                 {
                     ErrorLabel.Text = "Пароль должен быть больше 6ти символов";
                     return;
                 }
-                if (ConfirmPasswordbox.Text == string.Empty)
+                if (ConfirmPasswordbox.Password == string.Empty)
                 {
                     ErrorLabel.Text = "Заполните поле 'Продублируйте пароль'";
                     return;
                 }
-                if (Passwordbox.Text != ConfirmPasswordbox.Text)
+                if (Passwordbox.Password != ConfirmPasswordbox.Password)
                 {
                     ErrorLabel.Text = "Поля пароль и подтверждение пароля не совпадают";
                     return;
                 }
                 //проверка у пароля, чтоб был символ заглавный, символ и цифра
-                char[] pass = Passwordbox.Text.ToCharArray();
+                char[] pass = Passwordbox.Password.ToCharArray();
                 IQueryable<char> pass2 = pass.AsQueryable();
                 bool upp = false, ch = false, num = false;
                 //проверка на содержание хотя б одной цифры в пароле
@@ -114,7 +114,7 @@ namespace WpfAppClientToApi
                 UserModel tryuser = new UserModel()
                 {
                     LoginProp = LoginPropbox.Text,
-                    Password = Passwordbox.Text
+                    Password = Passwordbox.Password
                 };
                 if (model.Login(tryuser))
                 {
@@ -125,8 +125,8 @@ namespace WpfAppClientToApi
                 Newuser = new UserRegistration()
                 {
                     LoginProp = LoginPropbox.Text,
-                    Password = Passwordbox.Text,
-                    ConfirmPassword = ConfirmPasswordbox.Text
+                    Password = Passwordbox.Password,
+                    ConfirmPassword = ConfirmPasswordbox.Password
                 };
                 this.DialogResult = true;
 
