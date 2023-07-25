@@ -43,9 +43,13 @@ namespace WpfAppClientToApi
                 СhangedPerson.Address = addressbox.Text;
                 СhangedPerson.Description = descriptionbox.Text;
                 this.DialogResult = true;
-                this.Close();
+                this.Close();//после изменнеия это окно уже не нужно
             };
         }
+        /// <summary>
+        /// Вывод данных о контакте в соответсвующие textbox'ы
+        /// </summary>
+        /// <param name="person"></param>
         private void Load(Person person)
         {
             Namebox.Text = person.Name;

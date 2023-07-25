@@ -12,6 +12,6 @@ namespace WpfAppClientToApi
         public string LoginProp { get; set; }
 
         [DataType(DataType.Password)]
-        public string Password { get; set; } //пароль
+        public string Password { get; set; }
     }
 }

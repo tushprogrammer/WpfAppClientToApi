@@ -36,6 +36,7 @@
         <Button x:Name="DelButton" Content="Удалить" HorizontalAlignment="Left" Margin="625,92,0,0" VerticalAlignment="Top" Height="27" Width="96" Click="DelButton_Click"/>
         <Button x:Name="EditButton" Content="Изменить" HorizontalAlignment="Left" Margin="625,134,0,0" VerticalAlignment="Top" Height="27" Width="96" Click="EditButton_Click"/>
         <Button x:Name="AuthorizationButton" Content="Вход" HorizontalAlignment="Left" Margin="750,10,0,0" VerticalAlignment="Top" Click="AuthorizationButton_Click"/>
+        <Button x:Name="RegistrButton" Content="Регистрация" HorizontalAlignment="Left" Margin="625,10,0,0" VerticalAlignment="Top" Width="115" Click="RegistrButton_Click"/>
 
     </Grid>
 </Window>

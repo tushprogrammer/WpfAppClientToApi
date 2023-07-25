@@ -26,7 +26,7 @@ namespace WpfAppClientToApi
 
         public Person(string Name, string LastName, string MiddleName, string PhoneNumber, string Address, string Description)
         {
-            //id уже не нужно присваивать в конструкторе, так как это произойдет автоматически при добавлении в БД
+            //id уже не нужно присваивать в конструкторе, так как это произойдет автоматически на уровне добавления в БД
             this.Name = Name;
             this.LastName = LastName;
             this.MiddleName = MiddleName;

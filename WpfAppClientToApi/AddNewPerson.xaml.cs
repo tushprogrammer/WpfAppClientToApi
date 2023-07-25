@@ -23,6 +23,7 @@ namespace WpfAppClientToApi
         public AddNewPerson()
         {
             InitializeComponent();
+            //обработка нажатия кнопки "Добавить"
             AddButt.Click += delegate
             {
                 if (Namebox.Text == string.Empty

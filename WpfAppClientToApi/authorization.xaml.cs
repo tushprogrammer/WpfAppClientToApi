@@ -22,24 +22,34 @@ namespace WpfAppClientToApi
     /// <summary>
     /// Логика взаимодействия для authorization.xaml
     /// </summary>
-    public partial class authorization : Window
+    public partial class Authorization : Window
     {
         private readonly HttpClient httpClient;
-        public authorization()
+        private readonly ModelLogicApi api;
+        public Authorization()
         {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(@"https://localhost:7068/");
             InitializeComponent();
+            httpClient = new HttpClient();
+            api = new ModelLogicApi();
+            httpClient.BaseAddress = new Uri(@"https://localhost:7068/");
         }
 
-        private async void Log_enter_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Обработчик кнопки "Войти"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Log_enter_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                UserModel user = new UserModel();
-                user.LoginProp = login_box.Text;
-                user.Password = password_box.Password;
-                if (Login(user))
+                UserModel user = new UserModel()
+                {
+                    LoginProp = login_box.Text,
+                    Password = password_box.Password
+                };
+
+                if (api.Login(user))
                 {
                     //создание и открытие нового окна
                     MainWindow main = new MainWindow(user);
@@ -59,21 +69,7 @@ namespace WpfAppClientToApi
             {
                 ErrorBox.Text = a.Message; //вывод об ошибке и возврат
             }
-           
-        }
-        private bool Login(UserModel user)
-        {
 
-            string url = "api/Account/Login";
-            var r =  httpClient.PostAsync(url, new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")).Result;
-            if(r.IsSuccessStatusCode)
-            {
-                var otvet = r.Content.ReadAsStringAsync().Result;
-                bool ret = Convert.ToBoolean(otvet);
-                return ret;
-            }
-            return false;
         }
-      
     }
 }

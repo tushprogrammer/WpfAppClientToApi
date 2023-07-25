@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,17 +24,10 @@ namespace WpfAppClientToApi
     public partial class MainWindow : Window, IView
     {
         Presenter presenter;
-        public MainWindow() //для анонимных пользователей
+        public MainWindow() //для анонимных пользователей (открывается при запуске)
         {
             InitializeComponent();
-            
-            presenter = new Presenter(this);
-            presenter.Info();
-            AddButton.Visibility = Visibility.Hidden;
-            EditButton.Visibility = Visibility.Hidden;
-            DelButton.Visibility = Visibility.Hidden;
-            AddUserButton.Visibility = Visibility.Hidden;
-
+            Load();
         }
         public MainWindow(UserModel usernow) // для авторизованных пользователей 
         {
@@ -41,12 +35,31 @@ namespace WpfAppClientToApi
             Load(usernow);
             
         }
+
+        /// <summary>
+        /// Метод загрузки данных для авторизованного пользователя
+        /// </summary>
+        /// <param name="usernow">Модель авторизованного пользователя</param>
         private void Load(UserModel usernow)
         {
             presenter = new Presenter(this);
-            presenter.Info();
+            try
+            {
+                presenter.Info();
+            }
+            catch (SocketException E)
+            {
+                MessageBox.Show("api не запущена, данных не будет");
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show($"Error: {E.Message} {Environment.NewLine}" +
+                    $"Проверьте, запущен ли API сервис.");
+
+            }
             //если зашел под польз
             AuthorizationButton.Visibility = Visibility.Hidden;
+            RegistrButton.Visibility = Visibility.Hidden;
             if (!presenter.IsAdminUser(usernow.LoginProp))
             {
                 //если не админ
@@ -56,7 +69,33 @@ namespace WpfAppClientToApi
             }
            
         }
+        /// <summary>
+        /// Метод загрузки данных для анонимного пользователя
+        /// </summary>
+        private void Load()
+        {
+            presenter = new Presenter(this);
+            try
+            {
+                presenter.Info();
+            }
+            catch (SocketException E)
+            {
+                MessageBox.Show("api не запущена, данных не будет");
+            }
+            catch (Exception E)
+            {
+                MessageBox.Show($"Error: {E.Message} {Environment.NewLine}" +
+                    $"Проверьте, запущен ли API сервис.");
 
+            }
+            AddButton.Visibility = Visibility.Hidden;
+            EditButton.Visibility = Visibility.Hidden;
+            DelButton.Visibility = Visibility.Hidden;
+            AddUserButton.Visibility = Visibility.Hidden;
+        }
+
+        #region Связи с объектами через Presenter
         public ObservableCollection<Person> Books
         {
             set => listViewBook.ItemsSource = value;
@@ -65,7 +104,14 @@ namespace WpfAppClientToApi
         {
             get => (Person)listViewBook.SelectedItem;
         }
+        #endregion
 
+        #region Кнопки
+        /// <summary>
+        /// Обработчик кнопки "Добавить контакт"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             //открыть новое окно с формой заполнения 
@@ -77,6 +123,11 @@ namespace WpfAppClientToApi
             }
         }
 
+        /// <summary>
+        /// Обработчик кнопки "удалить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DelButton_Click(object sender, RoutedEventArgs e)
         {
             if (PersonNow is null)
@@ -87,6 +138,11 @@ namespace WpfAppClientToApi
             presenter.DeletePerson();
         }
 
+        /// <summary>
+        /// Обработчик кнопки "изменить"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             if (PersonNow is null)
@@ -97,13 +153,22 @@ namespace WpfAppClientToApi
             presenter.EditPerson();
         }
 
+        /// <summary>
+        /// Обработчик кнопки "Вход"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AuthorizationButton_Click(object sender, RoutedEventArgs e)
         {
-            authorization authorization = new authorization();
+            Authorization authorization = new Authorization();
             authorization.Show();
             this.Close();
         }
-
+        /// <summary>
+        /// Обработчик кнопки "Добавить пользователя"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddUserButton_Click(object sender, RoutedEventArgs e)
         {
             bool isAdmin = true;
@@ -114,5 +179,28 @@ namespace WpfAppClientToApi
                 presenter.AddNewUser(registration.Newuser);
             }
         }
+
+        /// <summary>
+        /// Обработчик кнопки "Регистрация"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RegistrButton_Click(object sender, RoutedEventArgs e)
+        {
+            Registration registration = new Registration();
+            registration.ShowDialog();
+            if (registration.DialogResult.Value)
+            {
+                presenter.AddNewUser(registration.Newuser);
+                //после успешной регистрации происходит повторная загрузка данных 
+                UserModel userModel = new UserModel()
+                {
+                    LoginProp = registration.Newuser.LoginProp,
+                    Password = registration.Newuser.Password
+                };
+                Load(userModel);
+            }
+        }
+        #endregion
     }
 }

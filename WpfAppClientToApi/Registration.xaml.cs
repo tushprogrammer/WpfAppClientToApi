@@ -109,6 +109,19 @@ namespace WpfAppClientToApi
                     ErrorLabel.Text = "В пароле должна быть хотя б 1 заглавная буква";
                     return;
                 }
+
+                ModelLogicApi model = new ModelLogicApi();
+                UserModel tryuser = new UserModel()
+                {
+                    LoginProp = LoginPropbox.Text,
+                    Password = Passwordbox.Text
+                };
+                if (model.Login(tryuser))
+                {
+                    ErrorLabel.Text = "Такой пользователь уже существует";
+                    return;
+                }
+                
                 Newuser = new UserRegistration()
                 {
                     LoginProp = LoginPropbox.Text,
@@ -121,6 +134,7 @@ namespace WpfAppClientToApi
 
             };
         }
+
       
     }
 }

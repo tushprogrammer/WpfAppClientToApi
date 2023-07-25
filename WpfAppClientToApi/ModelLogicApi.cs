@@ -21,25 +21,21 @@ namespace WpfAppClientToApi
             Client = new HttpClient();
             Client.BaseAddress = new Uri(@"https://localhost:7068/");
         }
+
+        /// <summary>
+        /// Метод загрузки данных о контактах из бд
+        /// </summary>
+        /// <returns></returns>
         public ObservableCollection<Person> GetData()
         {
-            try
-            {
                 string json = Client.GetStringAsync(url).Result;
                 return JsonConvert.DeserializeObject<ObservableCollection<Person>>(json);
-            }
-            catch (SocketException E)
-            {
-                //MessageBox.Show("Приложение Api не запущено");
-            }
-            catch(Exception e)
-            {
-
-            }
-              
-            return null;
         }
-        
+
+        /// <summary>
+        /// Метод добавления нового контакта в бд
+        /// </summary>
+        /// <param name="person"></param>
         public void AddNewPerson(Person person)
         {
             var result = Client.PostAsync(url, 
@@ -49,11 +45,19 @@ namespace WpfAppClientToApi
                     "application/json")
                 ).Result;
         }
+        /// <summary>
+        /// Метод удаления контакта из БД
+        /// </summary>
+        /// <param name="person"></param>
         public void DeletePerson(Person person)
         {
             int id = person.Id;
-            var result = Client.DeleteAsync(url + $"/{id}");
+            var result = Client.DeleteAsync(url + $"/{id}").Result;
         }
+        /// <summary>
+        /// Метод изменения контакта в БД
+        /// </summary>
+        /// <param name="person"></param>
         public void UpdatePerson(Person person)
         {
             string id = person.Id.ToString();
@@ -64,6 +68,12 @@ namespace WpfAppClientToApi
                     "application/json")
                 ).Result;
         }
+
+        /// <summary>
+        /// Метод проверки, имеется ли у пользователя роль администратора
+        /// </summary>
+        /// <param name="username">Логин пользователя</param>
+        /// <returns></returns>
         public bool IsAdminUser(string username)
         {
             string urlAccount = $"api/Account/{username}";
@@ -76,31 +86,35 @@ namespace WpfAppClientToApi
             }
             return false;
         }
+
+        /// <summary>
+        /// Метод добавления нового пользователя в БД
+        /// </summary>
+        /// <param name="NewUser">Новый пользователь</param>
         public void AddNewUser(UserRegistration NewUser)
         {
-            //проверка на существование такого же пользователя
+            string urlAccount = "api/Account/Register";
+            string json = JsonConvert.SerializeObject(NewUser);
+            var r = Client.PostAsync(urlAccount, new StringContent(JsonConvert.SerializeObject(NewUser), 
+                Encoding.UTF8, "application/json")).Result;
+        }
+
+        /// <summary>
+        /// Метод проверки наличия пользователя в БД
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool Login(UserModel user)
+        {
             string url = "api/Account/Login";
-            var r = Client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(NewUser), Encoding.UTF8, "application/json")).Result;
-            bool ret = false;
+            var r = Client.PostAsync(url, new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json")).Result;
             if (r.IsSuccessStatusCode)
             {
                 var otvet = r.Content.ReadAsStringAsync().Result;
-                ret = Convert.ToBoolean(otvet);
+                bool ret = Convert.ToBoolean(otvet);
+                return ret;
             }
-            if (!ret) //если вход не выполнен, значит такого пользователя нет (эту проверку надо вынести отсюда раньше)
-            {
-                //не факт что заработает, не понятно к какому post запросу это придет
-                //пока что не работает (возможно сам запрос через жепу работате)
-                string urlAccount = "api/Account/Register";
-                string json = JsonConvert.SerializeObject(NewUser);
-                r = Client.PostAsync(urlAccount, new StringContent(JsonConvert.SerializeObject(NewUser), 
-                    Encoding.UTF8, "application/json")).Result;
-                if (r.IsSuccessStatusCode)
-                {
-                    var otvet = r.Content.ReadAsStringAsync().Result;
-                    //bool ret = Convert.ToBoolean(otvet);
-                }
-            }
+            return false;
         }
     }
 
@@ -112,5 +126,6 @@ namespace WpfAppClientToApi
         void UpdatePerson(Person person);
         bool IsAdminUser(string username);
         void AddNewUser(UserRegistration userRegistration);
+        bool Login (UserModel user);
     }
 }
