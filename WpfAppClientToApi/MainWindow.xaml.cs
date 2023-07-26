@@ -75,20 +75,19 @@ namespace WpfAppClientToApi
         private void Load()
         {
             presenter = new Presenter(this);
-            try
-            {
+            //try
+            //{
                 presenter.Info();
-            }
-            catch (SocketException E)
-            {
-                MessageBox.Show("api не запущена, данных не будет");
-            }
-            catch (Exception E)
-            {
-                MessageBox.Show($"Error: {E.Message} {Environment.NewLine}" +
-                    $"Проверьте, запущен ли API сервис.");
+            //}
+            //catch (AggregateException E)
+            //{
+            //    MessageBox.Show($"{E.InnerException.Message}");
+            //}
+            //catch (Exception E)
+            //{
+            //    MessageBox.Show($"Error: {E.Message}");
 
-            }
+            //}
             AddButton.Visibility = Visibility.Hidden;
             EditButton.Visibility = Visibility.Hidden;
             DelButton.Visibility = Visibility.Hidden;
